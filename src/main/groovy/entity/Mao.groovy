@@ -9,7 +9,7 @@ class Mao {
     private int totalNoMaiorPar
     private int totalNoMenorPar
     private Categoria categoria
-    private int totalPares
+    private int totalGrupos
     private int cartaMaisAlta
     private List<Carta> cartas
 
@@ -18,7 +18,7 @@ class Mao {
         sortHand()
         verifyNaipe()
         verifySequencia()
-        verifyPares()
+        verifyGroups()
         determinarCartaMaisAlta()
         determineCategory()
     }
@@ -36,6 +36,7 @@ class Mao {
     private Result desempate(Mao opponent) {
         def myMap = getCartasAgrupadas(this.cartas)
         def opponentMap = getCartasAgrupadas(opponent.cartas)
+
         List<List<Carta>> myList = []
         List<List<Carta>> opponentList = []
         myMap.each { k, v -> myList << v }
@@ -62,23 +63,12 @@ class Mao {
     }
 
     private Map getCartasAgrupadas(List<Carta> paramCartas) {
-        def map = paramCartas.groupBy { it.valor.ordinal() }
-                .sort({ a, b ->
-            if (b.value.size() > a.value.size()) {
-                return 1
-            } else if (b.value.size() == a.value.size()) {
-                return -1
-            } else {
-                int bNumCarta = b.value.get(0).valor.ordinal()
-                int aNumCarta = a.value.get(0).valor.ordinal()
-                if (bNumCarta > aNumCarta) {
-                    return 1
-                } else {
-                    return -1
-                }
-            }
+        return paramCartas.groupBy { it.valor.ordinal() }.sort({ primeira, segunda ->
+            if (segunda.value.size() > primeira.value.size()) {return 1}
+            if (segunda.value.size() == primeira.value.size()) {return -1}
+            if (segunda.value.get(0).valor.ordinal() > primeira.value.get(0).valor.ordinal()) {return 1}
+            return -1
         })
-        return map
     }
 
     private void determineCategory() {
@@ -100,16 +90,16 @@ class Mao {
                     categoria = Categoria.QUADRA
                 } else {
                     if (totalNoMaiorPar == 3) {
-                        if (totalPares == 2) {
+                        if (totalGrupos == 2) {
                             categoria = Categoria.FULL_HOUSE
                         } else {
                             categoria = Categoria.TRINCA
                         }
                     } else {
-                        if (totalPares == 2) {
+                        if (totalGrupos == 2) {
                             categoria = Categoria.DOIS_PARES
                         } else {
-                            if (totalPares == 1) {
+                            if (totalGrupos == 1) {
                                 categoria = Categoria.UM_PAR
                             } else {
                                 categoria = Categoria.CARTA_ALTA
@@ -122,8 +112,7 @@ class Mao {
     }
 
     private void verifyNaipe() {
-
-        if (cartas.groupBy { it.naipe }.size().is(1)) {
+        if (cartas.groupBy { it.naipe }.size() == 1) {
             isMesmoNaipe = true
         } else {
             isMesmoNaipe = false
@@ -143,32 +132,32 @@ class Mao {
         }
     }
 
-    private void verifyPares() {
+    private void verifyGroups() {
         def map = getCartasAgrupadas(this.cartas)
         totalNoMaiorPar = 0
         totalNoMenorPar = 0
 
-        int sumPares = 0
-        int counter = 1
-        map.each {
-            if (counter == 1 && it.value.size() > 1) {
-                totalNoMaiorPar = it.value.size()
-            } else if (counter == 2 && it.value.size() > 1) {
-                totalNoMenorPar = it.value.size()
+        int somaGrupos = 0
+        int contador = 1
+        map.each {carta ->
+            if (contador == 1 && carta.value.size() > 1) {
+                totalNoMaiorPar = carta.value.size()
+            } else if (contador == 2 && carta.value.size() > 1) {
+                totalNoMenorPar = carta.value.size()
             }
-            if (it.value.size() > 1) {
-                sumPares++
+            if (carta.value.size() > 1) {
+                somaGrupos++
             }
-            counter++
+            contador++
         }
-        totalPares = sumPares
+        totalGrupos = somaGrupos
     }
 
     private void determinarCartaMaisAlta() {
         cartaMaisAlta = 0
-        cartas.each {
-            if (it.valor.ordinal() > cartaMaisAlta) {
-                cartaMaisAlta = it.valor.ordinal()
+        cartas.each {carta ->
+            if (carta.valor.ordinal() > cartaMaisAlta) {
+                cartaMaisAlta = carta.valor.ordinal()
             }
         }
     }

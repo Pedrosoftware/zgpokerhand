@@ -76,11 +76,11 @@ class MaoTeste extends Specification {
         when:
             mao.verifyNaipe()
             mao.verifySequencia()
-            mao.verifyPares()
+            mao.verifyGroups()
         then:
             mao.totalNoMaiorPar == totalNoMaiorPar
             mao.totalNoMenorPar == totalNoMenorPar
-            mao.totalPares == totalDePares
+            mao.totalGrupos == totalDePares
         where:
         cartas           | totalNoMaiorPar || totalNoMenorPar || totalDePares
         "6S 3D 6D 6D 3D" | 3               || 2               || 2
