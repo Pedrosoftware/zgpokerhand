@@ -111,15 +111,15 @@ class MaoTeste extends Specification {
         mao.cartaMaisAlta == resultado
         where: "teste de valores"
         cartas || resultado
-        "6S 3D 6D 6D 3D" | 6
-        "6S 6H 6D 6C 3D" | 6
-        "TC JC QC KC AC" | 14
-        "TC TH 5C 5H KH" | 13
-        "9C 9H 5C 5H AC" | 14
-        "6C 2C 3C 4C 5H" | 6
-        "9H 2C 5C 7C 8C" | 9
-        "9C 9C 5D TC TC" | 10
-        "2S 3D 6D 6D 3D" | 6
+        "6S 3D 6D 6D 3D" | 5
+        "6S 6H 6D 6C 3D" | 5
+        "TC JC QC KC AC" | 13
+        "TC TH 5C 5H KH" | 12
+        "9C 9H 5C 5H AC" | 13
+        "6C 2C 3C 4C 5H" | 5
+        "9H 2C 5C 7C 8C" | 8
+        "9C 9C 5D TC TC" | 9
+        "2S 3D 6D 6D 3D" | 5
 
 
     }

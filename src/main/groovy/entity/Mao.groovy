@@ -23,96 +23,95 @@ class Mao {
         determineCategory()
     }
 
-    Result compareWith(Mao opponent){
-        if(this.categoria.ordinal() > opponent.categoria.ordinal()){
+    Result compareWith(Mao opponent) {
+        if (this.categoria.ordinal() > opponent.categoria.ordinal()) {
             return Result.WIN
-        }else if(this.categoria.ordinal() < opponent.categoria.ordinal()){
+        } else if (this.categoria.ordinal() < opponent.categoria.ordinal()) {
             return Result.LOSS
-        }else{
+        } else {
             return desempate(opponent)
         }
     }
 
-    private Result desempate(Mao opponent){
+    private Result desempate(Mao opponent) {
         def myMap = getCartasAgrupadas(this.cartas)
         def opponentMap = getCartasAgrupadas(opponent.cartas)
         List<List<Carta>> myList = []
         List<List<Carta>> opponentList = []
-        myMap.each{k, v -> myList << v}
-        opponentMap.each{k, v -> opponentList << v}
+        myMap.each { k, v -> myList << v }
+        opponentMap.each { k, v -> opponentList << v }
 
-        if(myList.get(0).size() > 1){
-            Result r = getDesempateResult(myList.get(0).get(0).numCarta,opponentList.get(0).get(0).numCarta)
-            if(r.is(Result.DRAW)){
-                if(myList.get(1).size() > 1){
-                    r = getDesempateResult(myList.get(1).get(0).numCarta,opponentList.get(1).get(0).numCarta)
-                    if(r.is(Result.DRAW)){
+        if (myList.get(0).size() > 1) {
+            Result r = getDesempateResult(myList.get(0).get(0).valor.ordinal(), opponentList.get(0).get(0).valor.ordinal())
+            if (r.is(Result.DRAW)) {
+                if (myList.get(1).size() > 1) {
+                    r = getDesempateResult(myList.get(1).get(0).valor.ordinal(), opponentList.get(1).get(0).valor.ordinal())
+                    if (r.is(Result.DRAW)) {
                         return desempateByKicker(myList, opponentList)
-                    }else{
+                    } else {
                         return r
                     }
-                }else{
+                } else {
                     r = desempateByKicker(myList, opponentList)
                 }
             }
             return r
-        }else{
+        } else {
             return desempateByKicker(myList, opponentList)
         }
     }
 
-    private Map getCartasAgrupadas(List<Carta> paramCartas){
-        def map = paramCartas.groupBy {it.numCarta}
-        .sort({a, b ->
-            if(b.value.size() > a.value.size()){
+    private Map getCartasAgrupadas(List<Carta> paramCartas) {
+        def map = paramCartas.groupBy { it.valor.ordinal() }
+                .sort({ a, b ->
+            if (b.value.size() > a.value.size()) {
                 return 1
-            } else if(b.value.size() == a.value.size()){
+            } else if (b.value.size() == a.value.size()) {
                 return -1
-            }else{
-                int bNumCarta = b.value.get(0).numCarta
-                int aNumCarta = a.value.get(0).numCarta
-                if(bNumCarta > aNumCarta){
+            } else {
+                int bNumCarta = b.value.get(0).valor.ordinal()
+                int aNumCarta = a.value.get(0).valor.ordinal()
+                if (bNumCarta > aNumCarta) {
                     return 1
-                }else{
+                } else {
                     return -1
                 }
-
             }
         })
         return map
     }
 
-    private void determineCategory(){
-        if(isSequencia){
-            if(isMesmoNaipe){
-                if(cartaMaisAlta == 14){
+    private void determineCategory() {
+        if (isSequencia) {
+            if (isMesmoNaipe) {
+                if (cartaMaisAlta == 14) {
                     categoria = Categoria.ROYAL_FLUSH
-                }else{
+                } else {
                     categoria = Categoria.STRAIGHT_FLUSH
                 }
-            }else{
+            } else {
                 categoria = Categoria.SEQUENCIA
             }
-        }else{
-            if(isMesmoNaipe){
+        } else {
+            if (isMesmoNaipe) {
                 categoria = Categoria.FLUSH
-            }else{
-                if(totalNoMaiorPar == 4){
+            } else {
+                if (totalNoMaiorPar == 4) {
                     categoria = Categoria.QUADRA
-                }else{
-                    if(totalNoMaiorPar == 3){
-                        if(totalPares == 2){
+                } else {
+                    if (totalNoMaiorPar == 3) {
+                        if (totalPares == 2) {
                             categoria = Categoria.FULL_HOUSE
-                        }else{
+                        } else {
                             categoria = Categoria.TRINCA
                         }
-                    }else{
-                        if(totalPares == 2){
+                    } else {
+                        if (totalPares == 2) {
                             categoria = Categoria.DOIS_PARES
-                        }else{
-                            if(totalPares == 1){
+                        } else {
+                            if (totalPares == 1) {
                                 categoria = Categoria.UM_PAR
-                            }else{
+                            } else {
                                 categoria = Categoria.CARTA_ALTA
                             }
                         }
@@ -122,29 +121,29 @@ class Mao {
         }
     }
 
-    private void verifyNaipe(){
+    private void verifyNaipe() {
 
-        if(cartas.groupBy {it.naipe}.size().is(1)){
+        if (cartas.groupBy { it.naipe }.size().is(1)) {
             isMesmoNaipe = true
-        }else{
+        } else {
             isMesmoNaipe = false
         }
     }
 
-    private void verifySequencia(){
-        int numCartaAtual = (cartas.get(0).numCarta-1)
+    private void verifySequencia() {
+        int numCartaAtual = (cartas.get(0).valor.ordinal() - 1)
         isSequencia = true
 
-        cartas.each{
-            if(it.numCarta == (numCartaAtual+1)){
-                numCartaAtual = it.numCarta
-            }else{
+        cartas.each {
+            if (it.valor.ordinal() == (numCartaAtual + 1)) {
+                numCartaAtual = it.valor.ordinal()
+            } else {
                 isSequencia = false
             }
         }
     }
 
-    private void verifyPares(){
+    private void verifyPares() {
         def map = getCartasAgrupadas(this.cartas)
         totalNoMaiorPar = 0
         totalNoMenorPar = 0
@@ -152,88 +151,115 @@ class Mao {
         int sumPares = 0
         int counter = 1
         map.each {
-            if(counter == 1 && it.value.size()>1){
-                    totalNoMaiorPar=it.value.size()
-            }else if(counter == 2 && it.value.size() > 1){
+            if (counter == 1 && it.value.size() > 1) {
+                totalNoMaiorPar = it.value.size()
+            } else if (counter == 2 && it.value.size() > 1) {
                 totalNoMenorPar = it.value.size()
             }
-            if(it.value.size() > 1){sumPares++}
+            if (it.value.size() > 1) {
+                sumPares++
+            }
             counter++
         }
         totalPares = sumPares
     }
 
-    private void determinarCartaMaisAlta(){
+    private void determinarCartaMaisAlta() {
         cartaMaisAlta = 0
         cartas.each {
-            if(it.numCarta > cartaMaisAlta){
-                cartaMaisAlta = it.numCarta
+            if (it.valor.ordinal() > cartaMaisAlta) {
+                cartaMaisAlta = it.valor.ordinal()
             }
         }
     }
 
     private void sortHand() {
-        cartas.sort({it.numCarta})
+        cartas.sort({ it.valor.ordinal() })
     }
 
-    private List<Carta> convertToListCartas(String paramCartas){
+    private List<Carta> convertToListCartas(String paramCartas) {
         String[] arrayCartas = paramCartas.split(' ')
         List<Carta> listCartas = []
-        arrayCartas.each{numCarta ->
-            listCartas << new Carta(numCarta.substring(0,1), numCarta.charAt(1))
+        arrayCartas.each { numCarta ->
+            listCartas << new Carta(
+                    valor: discoverValorCarta(numCarta.substring(0, 1)),
+                    naipe: discoverNaipeCarta(numCarta.substring(1)))
         }
-        listCartas.each {it.numCarta = discoverNumCarta(it.valor)}
         return listCartas
     }
 
-    private static int discoverNumCarta(String letra) {
+    private Valor discoverValorCarta(String letra) {
         switch (letra) {
-            case ['2', '3', '4', '5', '6', '7', '8', '9']:
-                return Integer.parseInt(letra)
-                break
+            case ['2']:
+                return Valor.DOIS
+            case ['3']:
+                return Valor.TRES
+            case ['4']:
+                return Valor.QUATRO
+            case ['5']:
+                return Valor.CINCO
+            case ['6']:
+                return Valor.SEIS
+            case ['7']:
+                return Valor.SETE
+            case ['8']:
+                return Valor.OITO
+            case ['9']:
+                return Valor.NOVE
             case 'T':
-                return 10
-                break
+                return Valor.DEZ
             case 'J':
-                return 11
-                break
+                return Valor.VALETE
             case 'Q':
-                return 12
-                break
+                return Valor.DAMA
             case 'K':
-                return 13
-                break
+                return Valor.REI
             case 'A':
-                return 14
-                break
+                return Valor.AIS
             default:
                 throw new Exception("Valor inválido")
         }
     }
 
-    private Result getDesempateResult(int minhaCarta, int oponenteCarta){
-        if(minhaCarta > oponenteCarta){
+    private Naipe discoverNaipeCarta(String naipe) {
+        naipe = naipe.toUpperCase()
+        switch (naipe) {
+            case ['S']:
+                return Naipe.ESPADA
+            case ['H']:
+                return Naipe.COPAS
+            case ['D']:
+                return Naipe.OURO
+            case ['C']:
+                return Naipe.PAUS
+            default:
+                throw new Exception("Naipe inválido")
+        }
+    }
+
+    private Result getDesempateResult(int minhaCarta, int oponenteCarta) {
+        if (minhaCarta > oponenteCarta) {
             return Result.WIN
-        }else if(minhaCarta < oponenteCarta){
+        } else if (minhaCarta < oponenteCarta) {
             return Result.LOSS
-        }else{
+        } else {
             return Result.DRAW
         }
     }
 
-    private Result desempateByKicker(List<List<Carta>> minhaMao, List<List<Carta>> maoOponente){
+    private Result desempateByKicker(List<List<Carta>> minhaMao, List<List<Carta>> maoOponente) {
         Result result = null
-        for(int i = 0; i < minhaMao.size(); i++){
-            if(minhaMao.get(i).size()<2){
-                if(minhaMao.get(i).get(0).numCarta > maoOponente.get(i).get(0).numCarta){
+        for (int i = 0; i < minhaMao.size(); i++) {
+            if (minhaMao.get(i).size() < 2) {
+                if (minhaMao.get(i).get(0).valor.ordinal() > maoOponente.get(i).get(0).valor.ordinal()) {
                     result = Result.WIN
-                }else if (minhaMao.get(i).get(0).numCarta < maoOponente.get(i).get(0).numCarta){
+                } else if (minhaMao.get(i).get(0).valor.ordinal() < maoOponente.get(i).get(0).valor.ordinal()) {
                     result = Result.LOSS
                 }
             }
 
         }
-        if(result == null){
+        if (result == null) {
             result = Result.DRAW
         }
         return result
