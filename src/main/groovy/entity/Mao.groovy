@@ -24,9 +24,9 @@ class Mao {
     }
 
     Result compareWith(Mao opponent){
-        if(this.categoria.nivel > opponent.categoria.nivel){
+        if(this.categoria.ordinal() > opponent.categoria.ordinal()){
             return Result.WIN
-        }else if(this.categoria.nivel < opponent.categoria.nivel){
+        }else if(this.categoria.ordinal() < opponent.categoria.ordinal()){
             return Result.LOSS
         }else{
             return desempate(opponent)
