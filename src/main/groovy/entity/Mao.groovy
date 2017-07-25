@@ -2,7 +2,7 @@ package entity
 /**
  * Created by pedro on 19/07/17.
  */
-class Mao {
+abstract class Mao {
 
     private boolean isSequencia
     private boolean isMesmoNaipe
@@ -10,18 +10,18 @@ class Mao {
     private int totalNoMenorPar
     private Categoria categoria
     private int totalGrupos
-    private int cartaMaisAlta
-    private List<Carta> cartas
+    //private int cartaMaisAlta
+    protected List<Carta> cartas
 
-    Mao(String stringCartas) {
-        this.cartas = convertToListCartas(stringCartas)
-        sortHand()
-        verifyNaipe()
-        verifySequencia()
-        verifyGroups()
-        determinarCartaMaisAlta()
-        determineCategory()
-    }
+//    Mao(String stringCartas) {
+//        this.cartas = convertToListCartas(stringCartas)
+//        sortHand()
+//        isSameNaipe()
+//        isSequency()
+//        verifyGroups()
+//        determinarCartaMaisAlta()
+//        determineCategory()
+//    }
 
     Result compareWith(Mao opponent) {
         if (this.categoria.ordinal() > opponent.categoria.ordinal()) {
@@ -33,34 +33,86 @@ class Mao {
         }
     }
 
-    private Result desempate(Mao opponent) {
-        def myMap = getCartasAgrupadas(this.cartas)
-        def opponentMap = getCartasAgrupadas(opponent.cartas)
+    abstract boolean check(String cartas)
 
-        List<List<Carta>> myList = []
-        List<List<Carta>> opponentList = []
-        myMap.each { k, v -> myList << v }
-        opponentMap.each { k, v -> opponentList << v }
+    abstract Result desempate(List<Carta> opponent)
 
-        if (myList.get(0).size() > 1) {
-            Result r = getDesempateResult(myList.get(0).get(0).valor.ordinal(), opponentList.get(0).get(0).valor.ordinal())
-            if (r.is(Result.DRAW)) {
-                if (myList.get(1).size() > 1) {
-                    r = getDesempateResult(myList.get(1).get(0).valor.ordinal(), opponentList.get(1).get(0).valor.ordinal())
-                    if (r.is(Result.DRAW)) {
-                        return desempateByKicker(myList, opponentList)
-                    } else {
-                        return r
-                    }
-                } else {
-                    r = desempateByKicker(myList, opponentList)
-                }
-            }
-            return r
-        } else {
-            return desempateByKicker(myList, opponentList)
-        }
+    protected boolean isSameNaipe(List<Carta> paramCartas) {
+       return paramCartas.groupBy { it.naipe }.size() == 1
     }
+
+    protected boolean isSequency(List<Carta> paramCartas) {
+        boolean sequencia = true
+        int numCartaAtual = (paramCartas.get(0).valor.ordinal() - 1)
+
+        paramCartas.each {
+            if (it.valor.ordinal() == (numCartaAtual + 1)) {
+                numCartaAtual = it.valor.ordinal()
+            } else {
+                sequencia = false
+                return sequencia
+            }
+        }
+        return sequencia
+    }
+
+    protected boolean isMaiorParLengthEquals(int qtd){
+        return getCartasAgrupadas(cartas).values().getAt(0).size() == qtd
+    }
+
+    protected boolean isTotalParesEquals(int qtd){
+        Map<Integer,List<Carta>> map = getCartasAgrupadas(cartas)
+        int totalGrupos = 0
+        for(grupo in map){
+            if(grupo.value.size() > 1){
+                totalGrupos++
+            }
+        }
+        return (totalGrupos == qtd)
+    }
+
+    protected List<Carta> getCartasSemPar(List<Carta> paramCartas){
+        Map<Integer,List<Carta>> map = getCartasAgrupadas(paramCartas)
+        List<Carta> listaToReturn = []
+        map.each { grupo ->
+            if(grupo.value.size() == 1){
+                listaToReturn.add(grupo.value.get(0))
+            }
+        }
+        return listaToReturn
+    }
+
+    protected Valor (List<Carta> cartas) {
+        Valor cartaMaisAlta = Valor.DOIS
+        cartas.each {carta ->
+            if (carta.valor.is(cartaMaisAlta)) {
+                cartaMaisAlta = carta.valor
+            }
+        }
+        return cartaMaisAlta
+    }
+
+    protected List<Carta> sortHand(List<Carta> paramCartas) {
+        return cartas.sort({ it.valor.ordinal(paramCartas) })
+    }
+
+    protected List<Carta> convertToListCartas(String paramCartas) {
+        String[] arrayCartas = paramCartas.split(' ')
+        List<Carta> listCartas = []
+        arrayCartas.each { numCarta ->
+            listCartas << new Carta(
+                    valor: discoverValorCarta(numCarta.substring(0, 1)),
+                    naipe: discoverNaipeCarta(numCarta.substring(1)))
+        }
+        return listCartas
+    }
+
+
+
+
+
+
+
 
     private Map getCartasAgrupadas(List<Carta> paramCartas) {
         return paramCartas.groupBy { it.valor.ordinal() }.sort({ primeira, segunda ->
@@ -111,27 +163,6 @@ class Mao {
         }
     }
 
-    private void verifyNaipe() {
-        if (cartas.groupBy { it.naipe }.size() == 1) {
-            isMesmoNaipe = true
-        } else {
-            isMesmoNaipe = false
-        }
-    }
-
-    private void verifySequencia() {
-        int numCartaAtual = (cartas.get(0).valor.ordinal() - 1)
-        isSequencia = true
-
-        cartas.each {
-            if (it.valor.ordinal() == (numCartaAtual + 1)) {
-                numCartaAtual = it.valor.ordinal()
-            } else {
-                isSequencia = false
-            }
-        }
-    }
-
     private void verifyGroups() {
         def map = getCartasAgrupadas(this.cartas)
         totalNoMaiorPar = 0
@@ -151,30 +182,6 @@ class Mao {
             contador++
         }
         totalGrupos = somaGrupos
-    }
-
-    private void determinarCartaMaisAlta() {
-        cartaMaisAlta = 0
-        cartas.each {carta ->
-            if (carta.valor.ordinal() > cartaMaisAlta) {
-                cartaMaisAlta = carta.valor.ordinal()
-            }
-        }
-    }
-
-    private void sortHand() {
-        cartas.sort({ it.valor.ordinal() })
-    }
-
-    private List<Carta> convertToListCartas(String paramCartas) {
-        String[] arrayCartas = paramCartas.split(' ')
-        List<Carta> listCartas = []
-        arrayCartas.each { numCarta ->
-            listCartas << new Carta(
-                    valor: discoverValorCarta(numCarta.substring(0, 1)),
-                    naipe: discoverNaipeCarta(numCarta.substring(1)))
-        }
-        return listCartas
     }
 
     private Valor discoverValorCarta(String letra) {

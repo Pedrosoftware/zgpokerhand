@@ -35,7 +35,7 @@ class MaoTeste extends Specification {
         Mao mao = new Mao(cartas)
 
         when: "verifico se todas tem o mesmo naipe"
-        mao.verifyNaipe()
+        mao.isSameNaipe()
         then: "devo ter o resultado abaixo"
         mao.isMesmoNaipe == result
         where:
@@ -74,7 +74,7 @@ class MaoTeste extends Specification {
         given:
             Mao mao = new Mao(cartas)
         when:
-            mao.verifyNaipe()
+            mao.isSameNaipe()
             mao.verifySequencia()
             mao.verifyGroups()
         then:
