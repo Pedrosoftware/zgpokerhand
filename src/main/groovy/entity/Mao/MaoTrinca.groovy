@@ -1,15 +1,18 @@
-package entity
+package entity.Mao
+
+import entity.Carta
+import entity.Categoria
 
 /**
  * Created by pedro on 25/07/17.
  */
 class MaoTrinca extends Mao{
-    MaoTrinca(String paramCartas) {
+    MaoTrinca(List<Carta> paramCartas) {
         super(paramCartas)
         this.categoria = Categoria.TRINCA
     }
     @Override
-    boolean check(String paramCartas) {
+    boolean check() {
         return (!isSequency(minhasCartas)
                 && !isSameNaipe(minhasCartas)
                 && isMaiorParLengthEquals(3)

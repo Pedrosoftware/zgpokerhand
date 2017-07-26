@@ -1,20 +1,22 @@
-package entity
+package entity.Mao
+
+import entity.Carta
+import entity.Categoria
 
 /**
  * Created by pedro on 25/07/17.
  */
-class MaoDoisPares extends Mao {
-
-    MaoDoisPares(String paramCartas) {
+class MaoUmPar extends Mao{
+    MaoUmPar(List<Carta> paramCartas) {
         super(paramCartas)
-        this.categoria = Categoria.DOIS_PARES
+        this.categoria = Categoria.UM_PAR
     }
-
     @Override
-    boolean check(String paramCartas) {
-        return (!isSequency(minhasCartas)
+    boolean check() {
+
+        return(!isSequency(minhasCartas)
                 && !isSameNaipe(minhasCartas)
-                && isTotalParesEquals(2)
+                && isTotalParesEquals(1)
                 && isMaiorParLengthEquals(2))
     }
 

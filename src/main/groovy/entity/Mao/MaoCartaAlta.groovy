@@ -1,17 +1,20 @@
-package entity
+package entity.Mao
+
+import entity.Carta
+import entity.Categoria
 
 /**
  * Created by pedro on 25/07/17.
  */
 class MaoCartaAlta extends Mao{
 
-    MaoCartaAlta(String paramCartas) {
+    MaoCartaAlta(List<Carta> paramCartas) {
         super(paramCartas)
         this.categoria = Categoria.CARTA_ALTA
     }
 
     @Override
-    boolean check(String paramCartas) {
+    boolean check() {
         return(!isSequency(minhasCartas)
                 && !isSameNaipe(minhasCartas)
                 && isTotalParesEquals(0)

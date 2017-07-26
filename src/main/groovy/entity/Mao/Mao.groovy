@@ -1,4 +1,10 @@
-package entity
+package entity.Mao
+
+import entity.Carta
+import entity.Categoria
+import entity.Conversor
+import entity.Result
+
 /**
  * Created by pedro on 19/07/17.
  */
@@ -7,8 +13,8 @@ abstract class Mao {
     protected Categoria categoria
     protected List<Carta> minhasCartas
 
-    Mao(String paramCartas) {
-        minhasCartas = convertToListCartas(paramCartas).sort { it.valor.ordinal() }
+    Mao(List<Carta> cartas) {
+        minhasCartas = cartas
     }
 
     protected isPercorrerSomenteKickerNoDesempate(){
@@ -27,7 +33,7 @@ abstract class Mao {
         return this.desempate(opponent.minhasCartas)
     }
 
-    abstract boolean check(String cartas)
+    abstract boolean check()
 
     private Result desempate(List<Carta> opponent) {
         List<Carta> myCartas
@@ -107,18 +113,6 @@ abstract class Mao {
         return listaToReturn + getCartasSemGrupo(parCartas)
     }
 
-    protected List<Carta> convertToListCartas(String paramCartas) {
-        String[] arrayCartas = paramCartas.split(' ')
-        List<Carta> listCartas = []
-        arrayCartas.each { letra ->
-            Carta carta = new Carta(
-                    valor: discoverValorCarta(letra.substring(0, 1)),
-                    naipe: discoverNaipeCarta(letra.substring(1)))
-            listCartas << carta
-        }
-        return listCartas
-    }
-
     private Map getCartasAgrupadas(List<Carta> paramCartas) {
         return paramCartas.groupBy { it.valor.ordinal() }.sort({ primeiro, segundo ->
             if (segundo.value.size() > primeiro.value.size()) {
@@ -132,54 +126,5 @@ abstract class Mao {
             }
             return -1
         })
-    }
-
-    protected Valor discoverValorCarta(String letra) {
-        switch (letra) {
-            case ['2']:
-                return Valor.DOIS
-            case ['3']:
-                return Valor.TRES
-            case ['4']:
-                return Valor.QUATRO
-            case ['5']:
-                return Valor.CINCO
-            case ['6']:
-                return Valor.SEIS
-            case ['7']:
-                return Valor.SETE
-            case ['8']:
-                return Valor.OITO
-            case ['9']:
-                return Valor.NOVE
-            case 'T':
-                return Valor.DEZ
-            case 'J':
-                return Valor.VALETE
-            case 'Q':
-                return Valor.DAMA
-            case 'K':
-                return Valor.REI
-            case 'A':
-                return Valor.AIS
-            default:
-                throw new Exception("Valor inválido")
-        }
-    }
-
-    protected Naipe discoverNaipeCarta(String naipe) {
-        naipe = naipe.toUpperCase()
-        switch (naipe) {
-            case ['S']:
-                return Naipe.ESPADA
-            case ['H']:
-                return Naipe.COPAS
-            case ['D']:
-                return Naipe.OURO
-            case ['C']:
-                return Naipe.PAUS
-            default:
-                throw new Exception("Naipe inválido")
-        }
     }
 }

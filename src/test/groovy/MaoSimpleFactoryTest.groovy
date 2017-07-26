@@ -1,15 +1,15 @@
-import entity.Mao
-import entity.MaoCartaAlta
-import entity.MaoDoisPares
-import entity.MaoFlush
-import entity.MaoFullHouse
-import entity.MaoQuadra
-import entity.MaoRoyalFlush
-import entity.MaoSequencia
-import entity.MaoSimpleFactory
-import entity.MaoStraightFlush
-import entity.MaoTrinca
-import entity.MaoUmPar
+import entity.Mao.Mao
+import entity.Mao.MaoCartaAlta
+import entity.Mao.MaoDoisPares
+import entity.Mao.MaoFlush
+import entity.Mao.MaoFullHouse
+import entity.Mao.MaoQuadra
+import entity.Mao.MaoRoyalFlush
+import entity.Mao.MaoSequencia
+import entity.Mao.MaoSimpleFactory
+import entity.Mao.MaoStraightFlush
+import entity.Mao.MaoTrinca
+import entity.Mao.MaoUmPar
 import org.junit.Test
 import spock.lang.Specification
 
