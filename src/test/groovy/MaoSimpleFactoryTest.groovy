@@ -23,9 +23,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria RoyalFlush"
         (mao instanceof MaoRoyalFlush) == result
         where:
         cartas            || result
@@ -62,9 +62,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria StraightFlush"
         (mao instanceof MaoStraightFlush) == result
         where:
         cartas            || result
@@ -101,9 +101,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria Quadra"
         (mao instanceof MaoQuadra) == result
         where:
         cartas            || result
@@ -140,9 +140,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria FullHouse"
         (mao instanceof MaoFullHouse) == result
         where:
         cartas            || result
@@ -179,9 +179,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria Flush"
         (mao instanceof MaoFlush) == result
         where:
         cartas            || result
@@ -218,9 +218,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria Sequencia"
         (mao instanceof MaoSequencia) == result
         where:
         cartas            || result
@@ -257,9 +257,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria Trinca"
         (mao instanceof MaoTrinca) == result
         where:
         cartas            || result
@@ -296,9 +296,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria DoisPares"
         (mao instanceof MaoDoisPares) == result
         where:
         cartas            || result
@@ -335,9 +335,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria UmPar"
         (mao instanceof MaoUmPar) == result
         where:
         cartas            || result
@@ -374,9 +374,9 @@ class MaoSimpleFactoryTest extends Specification{
 
         given:
         Mao mao
-        when:"criar uma instância da classe mão"
+        when:"pegar uma instância da classe mão"
         mao = MaoSimpleFactory.create(cartas)
-        then:"devo receber a subclasse da categoria"
+        then:"devo receber a subclasse da categoria CartaAlta"
         (mao instanceof MaoCartaAlta) == result
         where:
         cartas            || result

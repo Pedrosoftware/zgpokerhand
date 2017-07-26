@@ -7,22 +7,29 @@ class MaoCartaAlta extends Mao{
 
     MaoCartaAlta(String paramCartas) {
         super(paramCartas)
+        this.categoria = Categoria.CARTA_ALTA
     }
 
     @Override
     boolean check(String paramCartas) {
-        return(!isSequency(cartas)
-                && !isSameNaipe(cartas)
+        return(!isSequency(minhasCartas)
+                && !isSameNaipe(minhasCartas)
                 && isTotalParesEquals(0)
                 && isMaiorParLengthEquals(1))
     }
 
     @Override
     Result desempate(List<Carta> opponent) {
-        if(getCartasSemPar(cartas).get(0).valor.ordinal() > getCartasSemPar(opponent).get(0).valor.ordinal()){
-            return Result.WIN
-        }else if(getCartasSemPar(cartas).get(0).valor.ordinal() < getCartasSemPar(opponent).get(0).valor.ordinal()){
-            return Result.LOSS
+
+        List<Carta> myCartas = getCartasSemPar(minhasCartas)
+        List<Carta> opponentCartas = getCartasSemPar(opponent)
+
+        for(int i = 0; i < myCartas.size(); i++){
+            if(myCartas.get(i).valor > opponentCartas.get(i).valor){
+                return Result.WIN
+            }else if(myCartas.get(i).valor < opponentCartas.get(i).valor){
+                return Result.LOSS
+            }
         }
         return Result.DRAW
     }

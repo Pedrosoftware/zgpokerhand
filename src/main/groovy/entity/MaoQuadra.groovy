@@ -6,19 +6,20 @@ package entity
 class MaoQuadra extends Mao{
     MaoQuadra(String paramCartas) {
         super(paramCartas)
+        this.categoria = Categoria.QUADRA
     }
     @Override
     boolean check(String paramCartas) {
-        return(!isSequency(cartas)
-                && !isSameNaipe(cartas)
+        return(!isSequency(minhasCartas)
+                && !isSameNaipe(minhasCartas)
                 && isMaiorParLengthEquals(4))
     }
 
     @Override
     Result desempate(List<Carta> opponent) {
-        if(cartas.get(cartas.size()-1).valor > opponent.get(cartas.size()-1).valor){
+        if(minhasCartas.get(minhasCartas.size()-1).valor > opponent.get(minhasCartas.size()-1).valor){
             return Result.WIN
-        }else if(cartas.get(cartas.size()-1).valor < opponent.get(cartas.size()-1).valor){
+        }else if(minhasCartas.get(minhasCartas.size()-1).valor < opponent.get(minhasCartas.size()-1).valor){
             return Result.LOSS
         }
         return Result.DRAW

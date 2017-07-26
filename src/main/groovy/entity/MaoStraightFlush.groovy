@@ -6,18 +6,19 @@ package entity
 class MaoStraightFlush extends Mao{
     MaoStraightFlush(String paramCartas) {
         super(paramCartas)
+        this.categoria = Categoria.STRAIGHT_FLUSH
     }
     @Override
     boolean check(String paramCartas) {
-        return(isSequency(cartas)
-                && isSameNaipe(cartas)
-                && cartas.get(cartas.size()-1).valor != Valor.AIS)
+        return(isSequency(minhasCartas)
+                && isSameNaipe(minhasCartas)
+                && minhasCartas.get(minhasCartas.size()-1).valor != Valor.AIS)
     }
 
     @Override
     Result desempate(List<Carta> opponent) {
-        Valor minhaCarta = determinarCartaMaisAlta(cartas)
-        Valor cartaOponente = determinarCartaMaisAlta(opponent)
+        Valor minhaCarta = getCartasSemPar(minhasCartas).get(0).valor
+        Valor cartaOponente = getCartasSemPar(opponent).get(0).valor
         if(minhaCarta > cartaOponente){
             return Result.WIN
         }else if(minhaCarta < cartaOponente){
