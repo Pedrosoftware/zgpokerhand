@@ -13,15 +13,10 @@ abstract class Mao {
     //private int cartaMaisAlta
     protected List<Carta> cartas
 
-//    Mao(String stringCartas) {
-//        this.cartas = convertToListCartas(stringCartas)
-//        sortHand()
-//        isSameNaipe()
-//        isSequency()
-//        verifyGroups()
-//        determinarCartaMaisAlta()
-//        determineCategory()
-//    }
+    Mao(String paramCartas) {
+        cartas = convertToListCartas(paramCartas)
+        cartas = this.sortHand(cartas)
+    }
 
     Result compareWith(Mao opponent) {
         if (this.categoria.ordinal() > opponent.categoria.ordinal()) {
@@ -57,7 +52,9 @@ abstract class Mao {
     }
 
     protected boolean isMaiorParLengthEquals(int qtd){
-        return getCartasAgrupadas(cartas).values().getAt(0).size() == qtd
+        Collection<List<Carta>> c = getCartasAgrupadas(cartas).values()
+        int qtdMaiorPar =c.iterator().next().size()
+        return qtdMaiorPar == qtd
     }
 
     protected boolean isTotalParesEquals(int qtd){
@@ -93,16 +90,18 @@ abstract class Mao {
     }
 
     protected List<Carta> sortHand(List<Carta> paramCartas) {
-        return cartas.sort({ it.valor.ordinal(paramCartas) })
+        return paramCartas.sort({ it.valor.ordinal() })
     }
 
+    //
     protected List<Carta> convertToListCartas(String paramCartas) {
         String[] arrayCartas = paramCartas.split(' ')
         List<Carta> listCartas = []
-        arrayCartas.each { numCarta ->
-            listCartas << new Carta(
-                    valor: discoverValorCarta(numCarta.substring(0, 1)),
-                    naipe: discoverNaipeCarta(numCarta.substring(1)))
+        arrayCartas.each { letra ->
+            Valor v = discoverValorCarta(letra.substring(0, 1))
+            Naipe n = discoverNaipeCarta(letra.substring(1))
+            Carta carta = new Carta(valor: v,naipe: n)
+            listCartas << carta
         }
         return listCartas
     }
@@ -184,7 +183,7 @@ abstract class Mao {
         totalGrupos = somaGrupos
     }
 
-    private Valor discoverValorCarta(String letra) {
+    protected Valor discoverValorCarta(String letra) {
         switch (letra) {
             case ['2']:
                 return Valor.DOIS
@@ -217,7 +216,7 @@ abstract class Mao {
         }
     }
 
-    private Naipe discoverNaipeCarta(String naipe) {
+    protected Naipe discoverNaipeCarta(String naipe) {
         naipe = naipe.toUpperCase()
         switch (naipe) {
             case ['S']:

@@ -6,7 +6,9 @@ import java.util.List;
  * Created by pedro on 25/07/17.
  */
 class MaoRoyalFlush extends Mao{
-
+    MaoRoyalFlush(String paramCartas) {
+        super(paramCartas)
+    }
     @Override
     Result desempate(List<Carta> opponent) {
         return Result.WIN

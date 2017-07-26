@@ -4,14 +4,17 @@ package entity
  * Created by pedro on 25/07/17.
  */
 class MaoCartaAlta extends Mao{
+
+    MaoCartaAlta(String paramCartas) {
+        super(paramCartas)
+    }
+
     @Override
     boolean check(String paramCartas) {
-        cartas = convertToListCartas(paramCartas)
-        cartas = this.sortHand(cartas)
         return(!isSequency(cartas)
                 && !isSameNaipe(cartas)
                 && isTotalParesEquals(0)
-                && isMaiorParLengthEquals(0))
+                && isMaiorParLengthEquals(1))
     }
 
     @Override
