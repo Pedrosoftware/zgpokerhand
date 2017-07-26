@@ -14,14 +14,4 @@ class MaoQuadra extends Mao{
                 && !isSameNaipe(minhasCartas)
                 && isMaiorParLengthEquals(4))
     }
-
-    @Override
-    Result desempate(List<Carta> opponent) {
-        if(minhasCartas.get(minhasCartas.size()-1).valor > opponent.get(minhasCartas.size()-1).valor){
-            return Result.WIN
-        }else if(minhasCartas.get(minhasCartas.size()-1).valor < opponent.get(minhasCartas.size()-1).valor){
-            return Result.LOSS
-        }
-        return Result.DRAW
-    }
 }

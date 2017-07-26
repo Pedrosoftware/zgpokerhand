@@ -8,8 +8,11 @@ abstract class Mao {
     protected List<Carta> minhasCartas
 
     Mao(String paramCartas) {
-        minhasCartas = convertToListCartas(paramCartas)
-        this.sortHand(minhasCartas)
+        minhasCartas = convertToListCartas(paramCartas).sort { it.valor.ordinal() }
+    }
+
+    protected isPercorrerSomenteKickerNoDesempate(){
+        return true
     }
 
     Result compareWith(Mao opponent) {
@@ -26,7 +29,26 @@ abstract class Mao {
 
     abstract boolean check(String cartas)
 
-    abstract Result desempate(List<Carta> opponent)
+    private Result desempate(List<Carta> opponent) {
+        List<Carta> myCartas
+        List<Carta> opponentCartas
+        if(isPercorrerSomenteKickerNoDesempate()){
+            myCartas = getCartasSemGrupo(minhasCartas)
+            opponentCartas = getCartasSemGrupo(opponent)
+        }else{
+            myCartas = getCartasDoMaiorGrupoAteKickerSemRepeticao(minhasCartas)
+            opponentCartas = getCartasDoMaiorGrupoAteKickerSemRepeticao(opponent)
+        }
+
+        for(int i = 0; i < myCartas.size(); i++){
+            if(myCartas.get(i).valor > opponentCartas.get(i).valor){
+                return Result.WIN
+            }else if(myCartas.get(i).valor < opponentCartas.get(i).valor){
+                return Result.LOSS
+            }
+        }
+        return Result.DRAW
+    }
 
     protected boolean isSameNaipe(List<Carta> paramCartas) {
         return paramCartas.groupBy { it.naipe }.size() == 1
@@ -62,7 +84,7 @@ abstract class Mao {
         return (totalGrupos == qtd)
     }
 
-    protected List<Carta> getCartasSemPar(List<Carta> paramCartas) {
+    private List<Carta> getCartasSemGrupo(List<Carta> paramCartas) {
         Map<Integer, List<Carta>> map = getCartasAgrupadas(paramCartas)
         List<Carta> listaToReturn = []
         map.each { grupo ->
@@ -73,19 +95,16 @@ abstract class Mao {
         return listaToReturn
     }
 
-    protected List<Carta> getCartasComPar(List<Carta> paramCartas) {
-        Map<Integer, List<Carta>> map = getCartasAgrupadas(paramCartas)
+    private List<Carta> getCartasDoMaiorGrupoAteKickerSemRepeticao(List<Carta> parCartas){
+
+        Map<Integer, List<Carta>> map = getCartasAgrupadas(parCartas)
         List<Carta> listaToReturn = []
         map.each { grupo ->
             if (grupo.value.size() > 1) {
                 listaToReturn.add(grupo.value.get(0))
             }
         }
-        return listaToReturn
-    }
-
-    protected List<Carta> sortHand(List<Carta> paramCartas) {
-        return paramCartas.sort { it.valor.ordinal() }
+        return listaToReturn + getCartasSemGrupo(parCartas)
     }
 
     protected List<Carta> convertToListCartas(String paramCartas) {
@@ -100,7 +119,7 @@ abstract class Mao {
         return listCartas
     }
 
-    protected Map getCartasAgrupadas(List<Carta> paramCartas) {
+    private Map getCartasAgrupadas(List<Carta> paramCartas) {
         return paramCartas.groupBy { it.valor.ordinal() }.sort({ primeiro, segundo ->
             if (segundo.value.size() > primeiro.value.size()) {
                 return 1

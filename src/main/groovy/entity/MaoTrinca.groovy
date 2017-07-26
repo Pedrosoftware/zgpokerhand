@@ -15,16 +15,4 @@ class MaoTrinca extends Mao{
                 && isMaiorParLengthEquals(3)
                 && isTotalParesEquals(1))
     }
-
-    @Override
-    Result desempate(List<Carta> opponent) {
-        Valor minhaCarta = getCartasSemPar(minhasCartas).get(0).valor
-        Valor cartaOponente = getCartasSemPar(opponent).get(0).valor
-        if(minhaCarta > cartaOponente){
-            return Result.WIN
-        }else if(minhaCarta < cartaOponente){
-            return Result.LOSS
-        }
-        return Result.DRAW
-    }
 }

@@ -19,18 +19,7 @@ class MaoCartaAlta extends Mao{
     }
 
     @Override
-    Result desempate(List<Carta> opponent) {
-
-        List<Carta> myCartas = getCartasSemPar(minhasCartas)
-        List<Carta> opponentCartas = getCartasSemPar(opponent)
-
-        for(int i = 0; i < myCartas.size(); i++){
-            if(myCartas.get(i).valor > opponentCartas.get(i).valor){
-                return Result.WIN
-            }else if(myCartas.get(i).valor < opponentCartas.get(i).valor){
-                return Result.LOSS
-            }
-        }
-        return Result.DRAW
+    protected isPercorrerSomenteKickerNoDesempate() {
+        return false
     }
 }
