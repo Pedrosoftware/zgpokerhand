@@ -16,28 +16,39 @@ class Conversor {
             listCartas << carta
         }
 
-        Map<Integer,List<Carta>> agrupamento = arrayCartas.groupBy { valor -> valor }.sort { a, b ->
+        Map<Carta, List<Carta>> agrupamento = listCartas.groupBy { valor -> valor.valor }
+
+//        println "MAO"
+//        agrupamento.each {
+//            if(it.value.get(0).valor == Valor.CINCO ||
+//                    it.value.get(0).valor == Valor.VALETE ||
+//                    it.value.get(0).valor == Valor.QUATRO){
+//                print " ${it.value.size()} ${it.value.get(0).valor}\t"
+//            }else{
+//                print " ${it.value.size()} ${it.value.get(0).valor}\t\t"
+//            }
+//        }
+//        println""
+        Grupo grupo = new Grupo()
+        agrupamento.sort { a, b ->
             if (b.value.size() > a.value.size()) {
                 return 1
             } else {
                 if (b.value.size() < a.value.size()) {
                     return -1
                 } else {
-                    if (b.value.get(0) > a.value.get(0)) {
+                    if (b.value.get(0).valor.ordinal() > a.value.get(0).valor.ordinal()) {
                         return 1
-                    } else {
-                        if (b.value.get(0) < a.value.get(0)) {
-                            return -1
-                        }
+                    } else if (b.value.get(0).valor.ordinal() < a.value.get(0).valor.ordinal()) {
+                        return -1
+
                     }
                 }
             }
             return 0
+        }.each {
+            grupo.lista << it.value.get(0)
         }
-        for(mapa in agrupamento){
-            grupos.add(new Grupo(lista: mapa.value))
-        }
-
         return listCartas
     }
 

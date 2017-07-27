@@ -5,4 +5,8 @@ package entity
  */
 class Grupo {
     List<Carta> lista
+
+    Grupo() {
+        lista = new ArrayList<>()
+    }
 }
