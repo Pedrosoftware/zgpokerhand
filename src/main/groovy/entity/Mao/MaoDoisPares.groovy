@@ -15,14 +15,10 @@ class MaoDoisPares extends Mao {
 
     @Override
     boolean check() {
-        return (!isSequency(minhasCartas)
-                && !isSameNaipe(minhasCartas)
+        return (!isSequencia(minhasCartas)
+                && !isMesmoNaipe(minhasCartas)
                 && isTotalParesEquals(2)
                 && isMaiorParLengthEquals(2))
     }
 
-    @Override
-    protected isPercorrerSomenteKickerNoDesempate() {
-        return false
-    }
 }

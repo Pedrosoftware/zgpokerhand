@@ -6,7 +6,7 @@ package entity
 class Conversor {
 
 
-    static List<Carta> converter(String paramCartas) {
+    static List<Carta> stringToCartas(String paramCartas) {
         String[] arrayCartas = paramCartas.split(' ')
         List<Carta> listCartas = []
         arrayCartas.each { letra ->
@@ -19,12 +19,29 @@ class Conversor {
         return listCartas
     }
 
-    static List<Carta> removerCartasDuplicadas(List<Carta> paramCartas){
-
-        Map<Valor, List<Carta>> agrupamento = paramCartas.groupBy { valor -> valor.valor }
+    static List<Carta> listaCompletaToListaSemDuplicidade(List<Carta> paramCartas){
 
         List<Carta> listSemRepeticao = []
-        agrupamento.sort { a, b ->
+        agrupar(paramCartas).each {
+            listSemRepeticao << it.value.get(0)
+        }
+        return listSemRepeticao
+    }
+
+    static List<Grupo> listaToGrupo(List<Carta> paramCartas){
+
+        List<Grupo> grupos = []
+        agrupar(paramCartas).each {
+            if(it.value.size() > 1){
+                grupos << new Grupo(carta: it.value.get(0), qtd: it.value.size())
+            }
+        }
+        return grupos
+    }
+
+    private static Map<Valor,List<Carta>> agrupar(List<Carta> paramCartas){
+
+        return paramCartas.groupBy { valor -> valor.valor }.sort { a, b ->
             if (b.value.size() > a.value.size()) {
                 return 1
             } else {
@@ -40,13 +57,10 @@ class Conversor {
                 }
             }
             return 0
-        }.each {
-            listSemRepeticao << it.value.get(0)
         }
-        return listSemRepeticao
     }
 
-    static Valor conversorValor(String letra) {
+    private static Valor conversorValor(String letra) {
         switch (letra) {
             case ['2']:
                 return Valor.DOIS
@@ -79,7 +93,7 @@ class Conversor {
         }
     }
 
-    static Naipe conversorNaipe(String naipe) {
+    private static Naipe conversorNaipe(String naipe) {
         naipe = naipe.toUpperCase()
         switch (naipe) {
             case ['S']:

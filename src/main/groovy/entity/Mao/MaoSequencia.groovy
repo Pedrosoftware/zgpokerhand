@@ -13,6 +13,6 @@ class MaoSequencia extends Mao{
     }
     @Override
     boolean check() {
-        return (isSequency(minhasCartas) && !isSameNaipe(minhasCartas) && isTotalParesEquals(0))
+        return (isSequencia(minhasCartas) && !isMesmoNaipe(minhasCartas) && isTotalParesEquals(0))
     }
 }

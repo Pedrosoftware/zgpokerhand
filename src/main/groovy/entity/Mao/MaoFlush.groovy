@@ -15,8 +15,8 @@ class MaoFlush extends Mao {
 
     @Override
     boolean check() {
-        return (!isSequency(minhasCartas)
-                && isSameNaipe(minhasCartas)
+        return (!isSequencia(minhasCartas)
+                && isMesmoNaipe(minhasCartas)
                 && isTotalParesEquals(0))
     }
 }

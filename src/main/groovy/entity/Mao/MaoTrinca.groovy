@@ -13,8 +13,8 @@ class MaoTrinca extends Mao{
     }
     @Override
     boolean check() {
-        return (!isSequency(minhasCartas)
-                && !isSameNaipe(minhasCartas)
+        return (!isSequencia(minhasCartas)
+                && !isMesmoNaipe(minhasCartas)
                 && isMaiorParLengthEquals(3)
                 && isTotalParesEquals(1))
     }

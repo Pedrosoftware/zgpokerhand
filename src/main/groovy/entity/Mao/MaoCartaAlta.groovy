@@ -15,14 +15,10 @@ class MaoCartaAlta extends Mao{
 
     @Override
     boolean check() {
-        return(!isSequency(minhasCartas)
-                && !isSameNaipe(minhasCartas)
+        return(!isSequencia(minhasCartas)
+                && !isMesmoNaipe(minhasCartas)
                 && isTotalParesEquals(0)
-                && isMaiorParLengthEquals(1))
+                && isMaiorParLengthEquals(0))
     }
 
-    @Override
-    protected isPercorrerSomenteKickerNoDesempate() {
-        return false
-    }
 }

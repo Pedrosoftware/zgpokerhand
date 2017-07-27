@@ -3,6 +3,7 @@ package entity.Mao
 import entity.Carta
 import entity.Categoria
 import entity.Conversor
+import entity.Grupo
 import entity.Result
 
 /**
@@ -15,10 +16,6 @@ abstract class Mao {
 
     Mao(List<Carta> cartas) {
         minhasCartas = cartas
-    }
-
-    protected isPercorrerSomenteKickerNoDesempate(){
-        return true
     }
 
     Result compareWith(Mao opponent) {
@@ -35,16 +32,9 @@ abstract class Mao {
 
     abstract boolean check()
 
-    private Result desempate(List<Carta> opponent) {
-        List<Carta> myCartas
-        List<Carta> opponentCartas
-        if(isPercorrerSomenteKickerNoDesempate()){
-            myCartas = getCartasSemGrupo(minhasCartas)
-            opponentCartas = getCartasSemGrupo(opponent)
-        }else{
-            myCartas = getCartasDoMaiorGrupoAteKickerSemRepeticao(minhasCartas)
-            opponentCartas = getCartasDoMaiorGrupoAteKickerSemRepeticao(opponent)
-        }
+    private Result desempate(List<Carta> cartasOponente) {
+        List<Carta> myCartas = Conversor.listaCompletaToListaSemDuplicidade(minhasCartas)
+        List<Carta> opponentCartas = Conversor.listaCompletaToListaSemDuplicidade(cartasOponente)
 
         for(int i = 0; i < myCartas.size(); i++){
             if(myCartas.get(i).valor > opponentCartas.get(i).valor){
@@ -56,11 +46,11 @@ abstract class Mao {
         return Result.DRAW
     }
 
-    protected boolean isSameNaipe(List<Carta> paramCartas) {
+    protected static boolean isMesmoNaipe(List<Carta> paramCartas) {
         return paramCartas.groupBy { it.naipe }.size() == 1
     }
 
-    protected boolean isSequency(List<Carta> paramCartas) {
+    protected static boolean isSequencia(List<Carta> paramCartas) {
         boolean isSequencia = true
         int numCartaAtual = (paramCartas.get(0).valor.ordinal() - 1)
 
@@ -76,55 +66,14 @@ abstract class Mao {
     }
 
     protected boolean isMaiorParLengthEquals(int qtd) {
-        return getCartasAgrupadas(minhasCartas).values().iterator().next().size() == qtd
+        List<Grupo> grupos = Conversor.listaToGrupo(minhasCartas)
+        if(grupos.size() > 0){
+            return (grupos.get(0).qtd == qtd)
+        }
+        return (qtd == 0)
     }
 
     protected boolean isTotalParesEquals(int qtd) {
-        Map<Integer, List<Carta>> map = getCartasAgrupadas(minhasCartas)
-        int totalGrupos = 0
-        map.each { grupo ->
-            if (grupo.value.size() > 1) {
-                totalGrupos++
-            }
-        }
-        return (totalGrupos == qtd)
-    }
-
-    private List<Carta> getCartasSemGrupo(List<Carta> paramCartas) {
-        Map<Integer, List<Carta>> map = getCartasAgrupadas(paramCartas)
-        List<Carta> listaToReturn = []
-        map.each { grupo ->
-            if (grupo.value.size() == 1) {
-                listaToReturn.add(grupo.value.get(0))
-            }
-        }
-        return listaToReturn
-    }
-
-    private List<Carta> getCartasDoMaiorGrupoAteKickerSemRepeticao(List<Carta> parCartas){
-
-        Map<Integer, List<Carta>> map = getCartasAgrupadas(parCartas)
-        List<Carta> listaToReturn = []
-        map.each { grupo ->
-            if (grupo.value.size() > 1) {
-                listaToReturn.add(grupo.value.get(0))
-            }
-        }
-        return listaToReturn + getCartasSemGrupo(parCartas)
-    }
-
-    private Map getCartasAgrupadas(List<Carta> paramCartas) {
-        return paramCartas.groupBy { it.valor.ordinal() }.sort({ primeiro, segundo ->
-            if (segundo.value.size() > primeiro.value.size()) {
-                return 1
-            }
-            if (segundo.value.size() == primeiro.value.size()) {
-                return -1
-            }
-            if (segundo.value.get(0).valor.ordinal() > primeiro.value.get(0).valor.ordinal()) {
-                return 1
-            }
-            return -1
-        })
+        return (Conversor.listaToGrupo(minhasCartas).size() == qtd)
     }
 }

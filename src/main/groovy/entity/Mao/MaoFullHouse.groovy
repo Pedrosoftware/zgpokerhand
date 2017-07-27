@@ -15,14 +15,10 @@ class MaoFullHouse extends Mao{
 
     @Override
     boolean check() {
-        return(!isSequency(minhasCartas)
-                && !isSameNaipe(minhasCartas)
+        return(!isSequencia(minhasCartas)
+                && !isMesmoNaipe(minhasCartas)
                 && isMaiorParLengthEquals(3)
                 && isTotalParesEquals(2))
     }
 
-    @Override
-    protected isPercorrerSomenteKickerNoDesempate() {
-        return false
-    }
 }

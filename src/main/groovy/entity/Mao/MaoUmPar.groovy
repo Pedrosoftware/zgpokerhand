@@ -14,14 +14,10 @@ class MaoUmPar extends Mao{
     @Override
     boolean check() {
 
-        return(!isSequency(minhasCartas)
-                && !isSameNaipe(minhasCartas)
+        return(!isSequencia(minhasCartas)
+                && !isMesmoNaipe(minhasCartas)
                 && isTotalParesEquals(1)
                 && isMaiorParLengthEquals(2))
     }
 
-    @Override
-    protected isPercorrerSomenteKickerNoDesempate() {
-        return false
-    }
 }
