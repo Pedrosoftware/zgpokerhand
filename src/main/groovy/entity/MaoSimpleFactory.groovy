@@ -1,7 +1,18 @@
-package entity.Mao
+package entity
 
 import entity.Carta
 import entity.Conversor
+import entity.Mao.Mao
+import entity.Mao.MaoCartaAlta
+import entity.Mao.MaoDoisPares
+import entity.Mao.MaoFlush
+import entity.Mao.MaoFullHouse
+import entity.Mao.MaoQuadra
+import entity.Mao.MaoRoyalFlush
+import entity.Mao.MaoSequencia
+import entity.Mao.MaoStraightFlush
+import entity.Mao.MaoTrinca
+import entity.Mao.MaoUmPar
 
 /**
  * Created by pedro on 26/07/17.

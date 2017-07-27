@@ -2,6 +2,7 @@ package entity.Mao
 
 import entity.Carta
 import entity.Categoria
+import entity.Comparador
 import entity.Conversor
 import entity.Grupo
 import entity.Result
@@ -13,9 +14,11 @@ abstract class Mao {
 
     protected Categoria categoria
     protected List<Carta> minhasCartas
+    protected Comparador comparador
 
     Mao(List<Carta> cartas) {
         minhasCartas = cartas
+        comparador = new Comparador()
     }
 
     Result compareWith(Mao opponent) {
@@ -46,34 +49,4 @@ abstract class Mao {
         return Result.DRAW
     }
 
-    protected static boolean isMesmoNaipe(List<Carta> paramCartas) {
-        return paramCartas.groupBy { it.naipe }.size() == 1
-    }
-
-    protected static boolean isSequencia(List<Carta> paramCartas) {
-        boolean isSequencia = true
-        int numCartaAtual = (paramCartas.get(0).valor.ordinal() - 1)
-
-        paramCartas.each {
-            if (it.valor.ordinal() == (numCartaAtual + 1)) {
-                numCartaAtual = it.valor.ordinal()
-            } else {
-                isSequencia = false
-                return isSequencia
-            }
-        }
-        return isSequencia
-    }
-
-    protected boolean isMaiorParLengthEquals(int qtd) {
-        List<Grupo> grupos = Conversor.listaToGrupo(minhasCartas)
-        if(grupos.size() > 0){
-            return (grupos.get(0).qtd == qtd)
-        }
-        return (qtd == 0)
-    }
-
-    protected boolean isTotalParesEquals(int qtd) {
-        return (Conversor.listaToGrupo(minhasCartas).size() == qtd)
-    }
 }

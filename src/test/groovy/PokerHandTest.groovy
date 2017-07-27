@@ -1,7 +1,7 @@
 package teste
 
 import entity.Mao.Mao
-import entity.Mao.MaoSimpleFactory
+import entity.MaoSimpleFactory
 import entity.Result
 import spock.lang.Specification
 import spock.lang.Unroll

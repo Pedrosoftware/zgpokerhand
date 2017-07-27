@@ -13,8 +13,8 @@ class MaoQuadra extends Mao{
     }
     @Override
     boolean check() {
-        return(!isSequencia(minhasCartas)
-                && !isMesmoNaipe(minhasCartas)
-                && isMaiorParLengthEquals(4))
+        return(!comparador.isSequencia(minhasCartas)
+                && !comparador.isMesmoNaipe(minhasCartas)
+                && comparador.isMaiorParLengthEquals(minhasCartas,4))
     }
 }

@@ -15,10 +15,10 @@ class MaoFullHouse extends Mao{
 
     @Override
     boolean check() {
-        return(!isSequencia(minhasCartas)
-                && !isMesmoNaipe(minhasCartas)
-                && isMaiorParLengthEquals(3)
-                && isTotalParesEquals(2))
+        return(!comparador.isSequencia(minhasCartas)
+                && !comparador.isMesmoNaipe(minhasCartas)
+                && comparador.isMaiorParLengthEquals(minhasCartas,3)
+                && comparador.isTotalParesEquals(minhasCartas,2))
     }
 
 }

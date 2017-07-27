@@ -15,8 +15,8 @@ class MaoRoyalFlush extends Mao{
 
     @Override
     boolean check() {
-        return(isSequencia(minhasCartas)
-                && isMesmoNaipe(minhasCartas)
+        return(comparador.isSequencia(minhasCartas)
+                && comparador.isMesmoNaipe(minhasCartas)
                 && minhasCartas.get(minhasCartas.size()-1).valor == Valor.AIS)
     }
 }

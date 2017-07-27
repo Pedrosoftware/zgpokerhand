@@ -6,7 +6,7 @@ import entity.Mao.MaoFullHouse
 import entity.Mao.MaoQuadra
 import entity.Mao.MaoRoyalFlush
 import entity.Mao.MaoSequencia
-import entity.Mao.MaoSimpleFactory
+import entity.MaoSimpleFactory
 import entity.Mao.MaoStraightFlush
 import entity.Mao.MaoTrinca
 import entity.Mao.MaoUmPar
