@@ -10,6 +10,7 @@ class MaoSimpleFactory {
 
     static Mao create(String cartas){
         List<Carta> lista = Conversor.converter(cartas).sort { it.valor.ordinal()}
+        teste(cartas)
         Mao mao = new MaoRoyalFlush(lista)
         if(mao.check()){return mao}
         mao = new MaoStraightFlush(lista)
@@ -31,5 +32,18 @@ class MaoSimpleFactory {
         mao = new MaoCartaAlta(lista)
         if(mao.check()){return mao}
         throw new Exception("lista inválidas")
+    }
+    static teste(String s){
+        List<Carta> listaCompleta = Conversor.converter(s)
+        println"\nCompleta"
+        listaCompleta.each {
+            print "${it.valor } "
+        }
+        List<Carta> listaSemRepeticao = Conversor.removerCartasDuplicadas(listaCompleta)
+        println""
+        listaSemRepeticao.each {
+            print "${it.valor } "
+        }
+
     }
 }

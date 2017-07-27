@@ -5,8 +5,8 @@ package entity
  */
 class Conversor {
 
+
     static List<Carta> converter(String paramCartas) {
-        List<Grupo> grupos = new ArrayList<>()
         String[] arrayCartas = paramCartas.split(' ')
         List<Carta> listCartas = []
         arrayCartas.each { letra ->
@@ -16,20 +16,14 @@ class Conversor {
             listCartas << carta
         }
 
-        Map<Carta, List<Carta>> agrupamento = listCartas.groupBy { valor -> valor.valor }
+        return listCartas
+    }
 
-//        println "MAO"
-//        agrupamento.each {
-//            if(it.value.get(0).valor == Valor.CINCO ||
-//                    it.value.get(0).valor == Valor.VALETE ||
-//                    it.value.get(0).valor == Valor.QUATRO){
-//                print " ${it.value.size()} ${it.value.get(0).valor}\t"
-//            }else{
-//                print " ${it.value.size()} ${it.value.get(0).valor}\t\t"
-//            }
-//        }
-//        println""
-        Grupo grupo = new Grupo()
+    static List<Carta> removerCartasDuplicadas(List<Carta> paramCartas){
+
+        Map<Valor, List<Carta>> agrupamento = paramCartas.groupBy { valor -> valor.valor }
+
+        List<Carta> listSemRepeticao = []
         agrupamento.sort { a, b ->
             if (b.value.size() > a.value.size()) {
                 return 1
@@ -47,9 +41,9 @@ class Conversor {
             }
             return 0
         }.each {
-            grupo.lista << it.value.get(0)
+            listSemRepeticao << it.value.get(0)
         }
-        return listCartas
+        return listSemRepeticao
     }
 
     static Valor conversorValor(String letra) {
