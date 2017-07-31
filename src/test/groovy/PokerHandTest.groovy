@@ -1,7 +1,6 @@
 package teste
 
-import entity.Mao.Mao
-import entity.MaoSimpleFactory
+import entity.Juiz
 import entity.Result
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -15,11 +14,10 @@ class PokerHandTest extends Specification{
     @Test
     void "Compara duas maos de poker"(){
         given: "crio duas mão de poker"
-        Mao hand1 = MaoSimpleFactory.create(myHand)
-        Mao hand2 = MaoSimpleFactory.create(opponentHand)
+        Juiz juiz = new Juiz()
 
         expect: "comparo uma com a outra"
-        hand1.compareWith(hand2) == result
+        juiz.compare(myHand,opponentHand) == result
 
         where: "com os valores abaixo"
         myHand           | opponentHand     || result
