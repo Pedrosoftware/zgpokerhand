@@ -18,8 +18,10 @@ import entity.reconhecedor.Reconhecedor
 class Juiz {
 
     private Reconhecedor[] reconhecedor
+    private List<Carta> myCartas
+    private List<Carta> opponentCartas
 
-    Juiz(){
+    Juiz() {
         reconhecedor = new Reconhecedor[10]
         reconhecedor[0] = new MaoRoyalFlush()
         reconhecedor[1] = new MaoStraightFlush()
@@ -36,42 +38,39 @@ class Juiz {
 
     Result compare(String mao1, String mao2) {
 
-        List<Carta> myCartas = Conversor.stringToCartas(mao1)
-        List<Carta> opponentCartas = Conversor.stringToCartas(mao2)
+        myCartas = Conversor.stringToCartas(mao1)
+        opponentCartas = Conversor.stringToCartas(mao2)
 
-        Reconhecedor myHand = reconhecer(myCartas)
-        Reconhecedor opponentHand = reconhecer(opponentCartas)
+        int myCategory = getCategoria(myCartas).ordinal()
+        int opCategory = getCategoria(opponentCartas).ordinal()
 
-        int minhaForca = myHand.getCategoria().ordinal()
-        int oponenteForca = opponentHand.getCategoria().ordinal()
-
-        if (minhaForca > oponenteForca) {
+        if (myCategory > opCategory) {
             return Result.WIN
-        } else if (minhaForca < oponenteForca) {
+        } else if (myCategory < opCategory) {
             return Result.LOSS
         }
-        return desempate(myCartas, opponentCartas)
+        return desempate()
     }
 
-    private Reconhecedor reconhecer(List<Carta> cartas){
+    private Categoria getCategoria(List<Carta> cartas) {
 
-        for(categoria in reconhecedor){
+        for (categoria in reconhecedor) {
             categoria.setCartas(cartas)
-            if(categoria.reconhecer()){
-                return categoria
+            if (categoria.reconhecer()) {
+                return categoria.getCategoria()
             }
         }
         throw new Exception("Falha ao detectar categoria da carta")
     }
 
-    private static Result desempate(List<Carta> minhasCartas,List<Carta> cartasOponente) {
-        List<Carta> myCartas = Conversor.listaCompletaToListaSemDuplicidade(minhasCartas)
-        List<Carta> opponentCartas = Conversor.listaCompletaToListaSemDuplicidade(cartasOponente)
+    private Result desempate() {
+        myCartas = Conversor.listaCompletaToListaSemDuplicidade(myCartas)
+        opponentCartas = Conversor.listaCompletaToListaSemDuplicidade(opponentCartas)
 
-        for(int i = 0; i < myCartas.size(); i++){
-            if(myCartas.get(i).valor > opponentCartas.get(i).valor){
+        for (int i = 0; i < myCartas.size(); i++) {
+            if (myCartas.get(i).valor > opponentCartas.get(i).valor) {
                 return Result.WIN
-            }else if(myCartas.get(i).valor < opponentCartas.get(i).valor){
+            } else if (myCartas.get(i).valor < opponentCartas.get(i).valor) {
                 return Result.LOSS
             }
         }

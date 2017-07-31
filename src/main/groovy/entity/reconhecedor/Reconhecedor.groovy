@@ -20,18 +20,16 @@ abstract class Reconhecedor {
     }
 
     boolean isSequencia(List<Carta> paramCartas) {
-        boolean isSequencia = true
         int numCartaAtual = (paramCartas.get(0).valor.ordinal() - 1)
 
-        paramCartas.each {
-            if (it.valor.ordinal() == (numCartaAtual + 1)) {
-                numCartaAtual = it.valor.ordinal()
+        for(carta in paramCartas){
+            if (carta.valor.ordinal() == (numCartaAtual + 1)) {
+                numCartaAtual = carta.valor.ordinal()
             } else {
-                isSequencia = false
-                return isSequencia
+                return false
             }
         }
-        return isSequencia
+        return true
     }
 
     boolean isMaiorParLengthEquals(List<Carta> cartas, int qtd) {
