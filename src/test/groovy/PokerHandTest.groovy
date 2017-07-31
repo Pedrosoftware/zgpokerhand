@@ -13,10 +13,10 @@ class PokerHandTest extends Specification{
     @Unroll
     @Test
     void "Compara duas maos de poker"(){
-        given: "crio duas mão de poker"
+        given: "Um juiz capaz de analizar as mãos"
         Juiz juiz = new Juiz()
 
-        expect: "comparo uma com a outra"
+        expect: "analizando duas mão de cartas o resultado seja o esperado"
         juiz.compare(myHand,opponentHand) == result
 
         where: "com os valores abaixo"
